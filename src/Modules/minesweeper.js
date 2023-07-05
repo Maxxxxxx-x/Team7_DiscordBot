@@ -1,67 +1,107 @@
-const { Queue } = require("./obj")
+const { Queue } = require("./obj");
 
 function random_12(){
     return Math.floor(Math.random() * 12);
 }
 
 function map_init(){
-    map = [].fill([].fill(0, 0, 11), 0, 11);
-    for (let i = 0; i < 11; i++){
+    map = [].fill([].fill(0, 0, 12), 0, 12);
+    for (let i = 0; i < 12; i++){
         let x = random_12(), y = random_12();
         if (map[x][y] != -1) map[x][y] = -1;
         else i--;
     }
+    for (let i = 0; i < 12; i++){
+        for (let j = 0; j < 12; j++){
+            if (map[i][j] != -1){
+                let x_move = [0, 0, 1, -1, 1, 1, -1, -1],
+                    y_move = [1, -1, 0, 0, 1, -1, 1, -1];
+                let count = 0;
+                for (let k = 0; k < 8; k++){
+                    let new_x = i + x_move[k], new_y = j + y_move[k];
+                    if (new_x >= 0 && new_x < 12 && new_y >= 0 && new_y < 12){
+                        if (map[new_x][new_y] === -1) count++;
+                    }
+                }
+                map[i][j] = count;
+            }
+        }
+    }
     return map;
 }
 
-function convert(table) {
-    table.array.forEach(col => {
-        col.forEach(
-            cell => {
-                if (cell === -1) cell = ":bomb:";
-                else if (cell === 0) cell = ":black_large_square:";
-                else if (cell === 1) cell = ":one:";
-                else if (cell === 2) cell = ":two:";
-                else if (cell === 3) cell = ":three:";
-                else if (cell === 4) cell = ":four:";
-                else if (cell === 5) cell = ":five";
-                else if (cell === 6) cell = ":six:";
-                else if (cell === 7) cell = ":seven:";
-                else if (cell === 8) cell = ":eight";
-                else if (cell === '?') cell = ":blue_square:";
-                else cell = ":triangular_flag_on_post:";
-            }
-        )
-    });
-    return table;
+function player_convert(player_table){
+    for (let i=0; i<12; i++){
+        for (let j=0; j<12; j++){
+            if (player_table[i][j] === -1) player_table[i][j] = ":boom:";
+            else if (player_table[i][j] === 0) player_table[i][j] = ":white_large_square:";
+            else if (player_table[i][j] === 1) player_table[i][j] = ":one:";
+            else if (player_table[i][j] === 2) player_table[i][j] = ":two:";
+            else if (player_table[i][j] === 3) player_table[i][j] = ":three:";
+            else if (player_table[i][j] === 4) player_table[i][j] = ":four:";
+            else if (player_table[i][j] === 5) player_table[i][j] = ":five:";
+            else if (player_table[i][j] === 6) player_table[i][j] = ":six:";
+            else if (player_table[i][j] === 7) player_table[i][j] = ":seven:";
+            else if (player_table[i][j] === 8) player_table[i][j] = ":eight:";
+            else if (player_table[i][j] === 9) player_table[i][j] = ":blue_square:";
+            else if (player_table[i][j] === -2) player_table[i][j] = ":triangular_flag_on_post:";
+        }
+    }
+    return player_table;
 }
 
+// BFS to check the empty area around the touched area
 function touch(true_table, player_table, x, y){
-    let dx = [0, 0, 1, -1, 1, 1, -1, -1],
-        dy = [1, -1, 0, 0, 1, -1, 1, -1];
-        // 保證不會戳到地雷和已標記的格子
-    player_table[x][y] = true_table[x][y];
-    if (player_table[x][y] != 0){
-        return player_table;
-    }
+    // make sure the touched area is not checked
+    if (player_table[x][y] != 9) return;
+    let x_move = [0, 0, 1, -1, 1, 1, -1, -1],
+        y_move = [1, -1, 0, 0, 1, -1, 1, -1];
     let q = new Queue();
     q.push([x, y]);
     while (!q.empty()){
         let pos = q.pop();
         let x = pos[0], y = pos[1];
         for (let i = 0; i < 8; i++){
-            let tx = x + dx[i], ty = y + dy[i];
-            if (tx < 0 || tx >= 12 || ty < 0 || ty >= 12) continue;
-            player_table[tx][ty] = true_table[tx][ty];
-            if (player_table[tx][ty] != 0) continue;
-            q.push([tx, ty]);
+            let new_x = x + x_move[i], new_y = y + y_move[i];
+            if (new_x >= 0 && new_x < 12 && new_y >= 0 && new_y < 12){
+                if (player_table[new_x][new_y] === 9){
+                    player_table[new_x][new_y] = true_table[new_x][new_y];
+                    if (true_table[new_x][new_y] >= 0) q.push([new_x, new_y]);
+                }
+            }
         }
     }
     return player_table;
 }
 
+function check_win(true_table, player_table){
+    let check = true;
+    for (let i = 0; i < 12; i++){
+        for (let j = 0; j < 12; j++){
+            if (true_table[i][j] === -1 && player_table[i][j] != -2) check = false;
+            if (true_table[i][j] != -1 && player_table[i][j] === -2) check = false;
+        }
+    }
+    return true;
+}
+
 module.exports = {
     init: map_init,
-    convert: convert,
-    touch: touch
+    player_convert: player_convert,
+    touch: touch,
+    check_win: check_win
 };
+
+/*
+true map:
+-1: mine
+0: empty
+1~8: mine around
+
+player map:
+-2: flag
+-1: mine
+0: check but empty
+1~8: mine around
+9: uncheck
+*/
