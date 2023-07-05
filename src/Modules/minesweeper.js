@@ -1,13 +1,40 @@
 const { Queue } = require("./obj");
+const fs = require("fs");
+
+function read_map(){
+    // read map in json format
+    let rawdata = fs.readFileSync("./data/map.json");
+    let map = JSON.parse(rawdata);
+    return map;
+}
+
+function write_map(map){
+    // write map in json format
+    let data = JSON.stringify(map);
+    fs.writeFileSync("./map.json", data);
+}
 
 function random_12(){
     return Math.floor(Math.random() * 12);
 }
 
 function map_init(){
-    map = [].fill([].fill(0, 0, 12), 0, 12);
+    // 2d 12x12 array, init value is 0
+    let map = [];
+    for (let i = 0; i < 12; i++){
+        let row = [];
+        for (let j = 0; j < 12; j++){
+            row.push(0);
+        }
+        map.push(row);
+    }
+    // print map
+    // console.log(map);
+
+
     for (let i = 0; i < 12; i++){
         let x = random_12(), y = random_12();
+        console.log(x, y, map[x][y]);
         if (map[x][y] != -1) map[x][y] = -1;
         else i--;
     }
@@ -89,7 +116,9 @@ module.exports = {
     init: map_init,
     player_convert: player_convert,
     touch: touch,
-    check_win: check_win
+    check_win: check_win,
+    read_map: read_map,
+    write_map: write_map
 };
 
 /*
