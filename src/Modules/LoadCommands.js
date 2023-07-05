@@ -1,7 +1,7 @@
 const { Collection, REST, Routes} = require("discord.js");
 const path = require("node:path");
 const fs = require("node:fs");
-const { BOT_TOKEN, BOT_ID } = require("../Config");
+const { BOT_TOKEN, BOT_ID } = require("./../config");
 
 
 function LoadCommands(Bot, CommandsDirectory){
