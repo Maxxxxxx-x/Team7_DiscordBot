@@ -9,8 +9,8 @@ class Queue{
         return this.data.shift();
     }
     empty(){
-        if (this.data.length > 0) return 1;
-        else return 0;
+        if (this.data.length > 0) return 0;
+        else return 1;
     }
 }
 
