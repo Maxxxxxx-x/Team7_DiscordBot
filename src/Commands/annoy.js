@@ -2,15 +2,15 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ping')
-        .setDescription('Replies with Pong!'),
+        .setName('annoy')
+        .setDescription('Annoy everyone in the channel!'),
     async execute(Bot, Interaction) {
-        const Message = await Interaction.reply({ content: 'Pinging...', fetchReply: true, ephemeral: true });
+        const Message = await Interaction.reply({ content: 'Ready to be annoyed?!', fetchReply: true });
         await Interaction.editReply({
             content: "",
             embeds: [
                 new EmbedBuilder()
-                    .setTitle(":ping_pong: Pong!")
+                    .setTitle("")
                     .addFields(
                         {
                             name: ":stopwatch: Uptime",
@@ -28,7 +28,7 @@ module.exports = {
                             inline: false
                         }
                     )
-                    .setColor("Green")
+                    .setColor("Random")
             ]
         });
     }
