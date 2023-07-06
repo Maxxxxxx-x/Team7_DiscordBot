@@ -2,10 +2,10 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('annoy')
-        .setDescription('Annoy everyone in the channel!'),
+        .setName('bday!')
+        .setDescription('為頻道裡的用戶慶祝生日'),
     async execute(Bot, Interaction) {
-        const Message = await Interaction.reply({ content: 'Ready to be annoyed?!', fetchReply: true });
+        const Message = await Interaction.reply({ content: '壽星在哪裡?!', fetchReply: true });
         await Interaction.editReply({
             content: "",
             embeds: [
