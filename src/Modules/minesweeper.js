@@ -137,12 +137,7 @@ function check_win(true_table, player_table) {
             if (player_table[i][j] != 9) checked_count++;
             if (player_table[i][j] === 9) uncheck_count++;
         }
-    if (flag_count+checked_count === 144){
-        return true
-    }
-    else if (uncheck_count+checked_count === 144){
-        return true;
-    }
+    if (flag_count + uncheck_count === 12) return true;
     return false;
 }
 
