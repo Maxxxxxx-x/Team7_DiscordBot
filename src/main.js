@@ -70,6 +70,7 @@ Bot.on("messageCreate", (message) => {
                     .setColor("Green")
             ]
         })
+        .then(console.log("================================================================="))
         .then(Bot.destroy())
         .then(LoadCommands(Bot, "./Commands"))
         .then(Bot.login(BOT_TOKEN))
