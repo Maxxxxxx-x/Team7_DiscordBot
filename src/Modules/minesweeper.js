@@ -127,36 +127,19 @@ function touch(true_table, player_table, x, y) {
     return player_table;
 }
 
-function win1(true_table, player_table) {
-    // 1. check if all the mine is flagged
-    for (let i = 0; i < 12; i++) {
-        for (let j = 0; j < 12; j++) {
-            if (true_table[i][j] === -1 && player_table[i][j] != -2) return false;
-            if (true_table[i][j] != -1 && player_table[i][j] === -2) return false;
-        }
-    }
-    console.log("win1");
-    return true;
-}
-
-function win2(true_table, player_table) {
-    // 2. check if all the cell is checked except the mine
-    let uncheck_count = 0;
-    for (let i = 0; i < 12; i++) {
-        for (let j = 0; j < 12; j++) {
-            uncheck_count += player_table[i][j] === 9 ? 1 : 0;
-        }
-    }
-
-    if (uncheck_count != 12) return false;
-    console.log("win2");
-    return true;
-}
-
 function check_win(true_table, player_table) {
-    if (win1(true_table, player_table) || win2(true_table, player_table))
-        return true;
-    else return false;
+    let flag_count = 0,
+        checked_count = 0,
+        uncheck_count = 0;
+    for (let i = 0; i < 12; i++)
+        for (let j = 0; j < 12; j++) {
+            if (player_table[i][j] === -2) flag_count++;
+            if (player_table[i][j] != 9) checked_count++;
+            if (player_table[i][j] === 9) uncheck_count++;
+        }
+    if (flag_count+checked_count != 144) return false;
+    if (uncheck_count+checked_count != 144) return false;
+    return true;
 }
 
 function map2str(map) {
