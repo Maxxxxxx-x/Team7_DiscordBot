@@ -10,9 +10,6 @@ const Bot = new Client({
     ]
 }); 
 
-let Reboot = false;
-let RebootChannel;
-
 LoadCommands(Bot, "./Commands");
 
 Bot.on("interactionCreate", async (Interaction) => {
@@ -26,27 +23,9 @@ Bot.on("interactionCreate", async (Interaction) => {
     }
 });
 
-Bot.on("guildMemberAdd", async (Member) => {
-
-});
-
-Bot.on("guildMemberRemove", async (Member) => {
-
-})
 
 Bot.on("ready", () => {
     console.log(`✅ Logged in as ${Bot.user.tag} successfully!`);
-    if (Reboot){
-        Reboot = false;
-        RebootChannel.send({
-            content: "",
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle("Successfully rebooted bot")
-                    .setColor("Green")
-            ]
-        })
-    }
 });
 
 Bot.on("messageCreate", (message) => {
