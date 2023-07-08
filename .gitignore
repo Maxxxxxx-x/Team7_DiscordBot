@@ -1,4 +1,3 @@
 node_modules/
 .env
 data/map.json
-./src/Commands/AI_Commands/*

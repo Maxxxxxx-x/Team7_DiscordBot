@@ -69,6 +69,8 @@ Execute the .sh or .bat file
 
 Just to tease y'all
 
+Lyrics: 海闊天空
+
 今天我 寒夜裡看雪飄過
 懷著冷卻了的心窩漂遠方
 風雨裏追趕 霧裡分不清影蹤
