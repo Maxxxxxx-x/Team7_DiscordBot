@@ -50,13 +50,13 @@ Bot.on("ready", () => {
 });
 
 Bot.on("messageCreate", (message) => {
-    if (message.content !== "!reboot") return;
+    if (message.content !== "!reset_ws") return;
     if (!message.member.permissions.has(PermissionFlagsBits.Administrator)){
         message.channel.send({
             content: "",
             embeds: [
                 new EmbedBuilder()
-                    .setTitle("Nah")
+                    .setTitle("Nah I don't think I will")
                     .setColor("DarkButNotBlack")
             ]
         });
@@ -66,7 +66,7 @@ Bot.on("messageCreate", (message) => {
             content: "",
             embeds: [
                 new EmbedBuilder()
-                    .setTitle("Rebooting...")
+                    .setTitle("Reconnecting websocket connections...")
                     .setColor("Green")
             ]
         })
@@ -78,7 +78,7 @@ Bot.on("messageCreate", (message) => {
             content: "",
             embeds: [
                 new EmbedBuilder()
-                    .setTitle("Rebooted")
+                    .setTitle("Reconnected")
                     .setColor("Green")
             ]
         }));

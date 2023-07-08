@@ -11,9 +11,25 @@ function LoadCommands(Bot, CommandsDirectory){
     const Commands = [];
     for (const File of CommandFiles){
         const Command = require(`${CommandsDirectory}/${File}`);
+        if (!("data" in Command && "execute" in Command)){
+            console.log(`❌ Failed to load normal commands:  ${File}`);
+            continue;
+        }
         Bot.commands.set(Command.data.name, Command);
         Commands.push(Command.data.toJSON());
-        console.log(`✅ Successfully loaded ${File}`);
+        console.log(`✅ Successfully loaded normal command: ${File}`);
+    }
+    const AICommandPath = path.join(CommandsDirectory, "AI_Commands");
+    const AICommandFiles = fs.readdirSync(AICommandPath).filter((File) => File.endsWith(".js"));
+    for (const File of AICommandFiles){
+        const Command = require(`${AICommandPath}/${File}`);
+        if (!("data" in Command && "execute" in Command)){
+            console.log(`❌ Failed to load AI Commands: ${File}`);
+            continue;
+        }
+        Bot.commands.set(Command.data.name, Command);
+        Commands.push(Command.data.toJSON());
+        console.log(`✅ Successfully loaded AI Command: ${File}`);
     }
 
     const Rest = new REST({ version: "10" }).setToken(BOT_TOKEN);
